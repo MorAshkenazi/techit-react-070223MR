@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "name": "Mor Ashkenazi",
+      "email": "mora@gmail.com",
+      "password": "12345678",
+      "isAdmin": true,
+      "id": 1
+    },
+    {
+      "name": "Israel Israeli",
+      "email": "israel@gmail.com",
+      "password": "12345678",
+      "isAdmin": false,
+      "id": 2
+    },
+    {
+      "name": "Harry Potter",
+      "email": "harry@gmail.com",
+      "password": "12345678",
+      "isAdmin": false,
+      "id": 3
+    }
+  ]
+}
