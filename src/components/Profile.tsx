@@ -8,7 +8,9 @@ interface ProfileProps {}
 const Profile: FunctionComponent<ProfileProps> = () => {
   let [userInfo, setUserInfo] = useState<User>();
   useEffect(() => {
-    getUserByEmail(sessionStorage.getItem("userEmail") as string)
+    getUserByEmail(
+      JSON.parse(sessionStorage.getItem("userInfo") as string).email
+    )
       .then((res) => {
         if (res.data.length) {
           setUserInfo(res.data[0]);
@@ -18,7 +20,6 @@ const Profile: FunctionComponent<ProfileProps> = () => {
   }, []);
   return (
     <>
-      <Navbar />
       <div className="card">
         <div className="card-title">{userInfo?.name}</div>
         <div className="card-body">

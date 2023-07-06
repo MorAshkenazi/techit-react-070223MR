@@ -5,9 +5,11 @@ import * as yup from "yup";
 import { addUser } from "../services/usersService";
 import { successMsg } from "../services/feedbacksService";
 
-interface RegisterProps {}
+interface RegisterProps {
+  setUserInfo: Function;
+}
 
-const Register: FunctionComponent<RegisterProps> = () => {
+const Register: FunctionComponent<RegisterProps> = ({ setUserInfo }) => {
   let navigate = useNavigate();
   let formik = useFormik({
     initialValues: { name: "", email: "", password: "" },
@@ -20,7 +22,14 @@ const Register: FunctionComponent<RegisterProps> = () => {
       addUser({ ...values, isAdmin: false })
         .then((res) => {
           navigate("/home");
-          sessionStorage.setItem("userEmail", values.email);
+          sessionStorage.setItem(
+            "userInfo",
+            JSON.stringify({
+              email: res.data.email,
+              isAdmin: res.data.isAdmin,
+            })
+          );
+          setUserInfo(JSON.parse(sessionStorage.getItem("userInfo") as string));
           successMsg(`${values.email} wes registered and logged in`);
         })
         .catch((err) => console.log(err));

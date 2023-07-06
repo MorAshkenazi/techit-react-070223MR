@@ -6,18 +6,32 @@ import Home from "./components/Home";
 import Register from "./components/Register";
 import { ToastContainer } from "react-toastify";
 import Profile from "./components/Profile";
+import Products from "./components/Products";
+import Navbar from "./components/Navbar";
+import { useState } from "react";
+import PageNotFound from "./components/PageNotFound";
 
 function App() {
+  let [userInfo, setUserInfo] = useState(
+    JSON.parse(sessionStorage.getItem("userInfo") as string) == null
+      ? { email: false, isAdmin: false }
+      : JSON.parse(sessionStorage.getItem("userInfo") as string)
+  );
   return (
     <div className="App">
       <ToastContainer theme="dark" />
       <Router>
+        <Navbar userInfo={userInfo} setUserInfo={setUserInfo} />
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Login setUserInfo={setUserInfo} />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/register"
+            element={<Register setUserInfo={setUserInfo} />}
+          />
           <Route path="/profile" element={<Profile />} />
-          <Route path="*" element={<Login />} />
+          <Route path="/products" element={<Products userInfo={userInfo} />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
     </div>

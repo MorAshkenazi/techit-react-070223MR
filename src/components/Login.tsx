@@ -5,9 +5,11 @@ import * as yup from "yup";
 import { checkUser } from "../services/usersService";
 import { errorMsg, successMsg } from "../services/feedbacksService";
 
-interface LoginProps {}
+interface LoginProps {
+  setUserInfo: Function;
+}
 
-const Login: FunctionComponent<LoginProps> = () => {
+const Login: FunctionComponent<LoginProps> = ({ setUserInfo }) => {
   let navigate = useNavigate();
   let formik = useFormik({
     initialValues: { email: "", password: "" },
@@ -21,7 +23,16 @@ const Login: FunctionComponent<LoginProps> = () => {
           if (res.data.length) {
             navigate("/home");
             successMsg(`You're logged in as ${values.email}`);
-            sessionStorage.setItem("userEmail", values.email);
+            sessionStorage.setItem(
+              "userInfo",
+              JSON.stringify({
+                email: res.data[0].email,
+                isAdmin: res.data[0].isAdmin,
+              })
+            );
+            setUserInfo(
+              JSON.parse(sessionStorage.getItem("userInfo") as string)
+            );
           } else errorMsg("Wrong email or password");
         })
         .catch((err) => console.log(err));

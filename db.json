@@ -20,6 +20,31 @@
       "password": "12345678",
       "isAdmin": false,
       "id": 3
+    },
+    {
+      "name": "Harry Potter 2",
+      "email": "harry2@gmail.com",
+      "password": "12345678",
+      "isAdmin": false,
+      "id": 4
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Microsoft Earphones",
+      "price": 80,
+      "category": "Headphones",
+      "description": "The Microsoft new earphones with high quality",
+      "image": "/images/Microsoft_Earphones.png"
+    },
+    {
+      "id": 2,
+      "name": "Microsoft Headphones",
+      "price": 200,
+      "category": "Headphones",
+      "description": "The Microsoft new headphones with high quality",
+      "image": "/images/Microsoft_Headphones.png"
     }
   ]
 }
