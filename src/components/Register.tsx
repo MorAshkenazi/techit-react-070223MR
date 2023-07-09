@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { addUser } from "../services/usersService";
 import { successMsg } from "../services/feedbacksService";
+import { createCart } from "../services/cartsService";
 
 interface RegisterProps {
   setUserInfo: Function;
@@ -27,10 +28,12 @@ const Register: FunctionComponent<RegisterProps> = ({ setUserInfo }) => {
             JSON.stringify({
               email: res.data.email,
               isAdmin: res.data.isAdmin,
+              userId: res.data.id,
             })
           );
           setUserInfo(JSON.parse(sessionStorage.getItem("userInfo") as string));
           successMsg(`${values.email} wes registered and logged in`);
+          createCart(res.data.id);
         })
         .catch((err) => console.log(err));
     },

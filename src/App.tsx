@@ -10,6 +10,9 @@ import Products from "./components/Products";
 import Navbar from "./components/Navbar";
 import { useState } from "react";
 import PageNotFound from "./components/PageNotFound";
+import NewProduct from "./components/NewProduct";
+import UpdateProduct from "./components/UpdateProduct";
+import Cart from "./components/Cart";
 
 function App() {
   let [userInfo, setUserInfo] = useState(
@@ -31,6 +34,9 @@ function App() {
           />
           <Route path="/profile" element={<Profile />} />
           <Route path="/products" element={<Products userInfo={userInfo} />} />
+          <Route path="/products/new" element={<NewProduct />} />
+          <Route path="/products/update/:id" element={<UpdateProduct />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>

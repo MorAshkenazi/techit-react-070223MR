@@ -1,8 +1,10 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import Navbar from "./Navbar";
-import { getProducts } from "../services/productsService";
+import { deleteProduct, getProducts } from "../services/productsService";
 import Product from "../interfaces/Product";
 import { Link } from "react-router-dom";
+import { successMsg } from "../services/feedbacksService";
+import { addToCart } from "../services/cartsService";
 
 interface ProductsProps {
   userInfo: any;
@@ -10,16 +12,41 @@ interface ProductsProps {
 
 const Products: FunctionComponent<ProductsProps> = ({ userInfo }) => {
   let [products, setProducts] = useState<Product[]>([]);
+  let [productsChanged, setProductsChanged] = useState<boolean>(false);
   useEffect(() => {
     getProducts()
       .then((res) => setProducts(res.data))
       .catch((err) => console.log(err));
-  }, []);
+  }, [productsChanged]);
+
+  let render = () => {
+    setProductsChanged(!productsChanged);
+  };
+
+  let handleDelete = (id: number) => {
+    if (window.confirm("Are you sure?")) {
+      deleteProduct(id)
+        .then((res) => {
+          successMsg("Product deleted successfully!");
+          render();
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  let handleAddToCart = (product: Product) => {
+    let userId = JSON.parse(
+      sessionStorage.getItem("userInfo") as string
+    ).userId;
+    addToCart(userId, product)
+      .then((res) => successMsg("Product added to cart!"))
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <h1>Products</h1>
       {userInfo.isAdmin && (
-        <Link to="" className="btn btn-success">
+        <Link to="new" className="btn btn-success">
           <i className="fa-solid fa-plus"></i> Add Product
         </Link>
       )}
@@ -45,15 +72,25 @@ const Products: FunctionComponent<ProductsProps> = ({ userInfo }) => {
                   <h5 className="card-title">{product.name}</h5>
                   <p className="card-text">{product.description}</p>
                   <p className="card-text text-success">{product.price} ₪</p>
-                  <a href="#" className="btn btn-primary">
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => handleAddToCart(product)}
+                  >
                     <i className="fa-solid fa-cart-shopping"></i> Add to Cart
-                  </a>
+                  </button>
                   {userInfo.isAdmin && (
                     <>
-                      <Link to="" className="btn btn-warning mx-1">
+                      <Link
+                        to={`update/${product.id}`}
+                        className="btn btn-warning mx-1"
+                      >
                         <i className="fa-solid fa-pen-to-square"></i>
                       </Link>
-                      <Link to="" className="btn btn-danger">
+                      <Link
+                        to=""
+                        className="btn btn-danger"
+                        onClick={() => handleDelete(product.id as number)}
+                      >
                         <i className="fa-solid fa-trash"></i>
                       </Link>
                     </>

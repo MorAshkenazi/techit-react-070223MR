@@ -28,6 +28,7 @@ const Login: FunctionComponent<LoginProps> = ({ setUserInfo }) => {
               JSON.stringify({
                 email: res.data[0].email,
                 isAdmin: res.data[0].isAdmin,
+                userId: res.data[0].id,
               })
             );
             setUserInfo(
